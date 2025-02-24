@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace JwtAuthApi.Configure
 {
@@ -32,12 +33,33 @@ namespace JwtAuthApi.Configure
                     {
                         OnAuthenticationFailed = context =>
                         {
-                            Console.WriteLine("Token validation failed: " + context.Exception.Message);
+                            Console.WriteLine(context.Response.HasStarted + " Token validation failed: " + context.Exception.Message);
+                            // context.Response.StatusCode = 401;
+                            // context.Response.ContentType = "application/json";
+                            // context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = context.Exception.Message }));
+                            // return context.Response.CompleteAsync();
                             return Task.CompletedTask;
                         },
                         OnTokenValidated = context =>
                         {
                             Console.WriteLine("Token validated successfully");
+                            return Task.CompletedTask;
+                        },
+                        OnForbidden = context =>
+                        {
+                            Console.WriteLine(context.Response.HasStarted + " Forbidden: " + context.Response.StatusCode);
+                            // context.Response.StatusCode = 403;
+                            // context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = "Forbidden" }));
+                            return Task.CompletedTask;
+                        },
+                        OnChallenge = context =>
+                        {
+                            Console.WriteLine("Challenge: " + context.Response.StatusCode);
+                            return Task.CompletedTask;
+                        },
+                        OnMessageReceived = context =>
+                        {
+                            Console.WriteLine("Message received: " + context.Token);
                             return Task.CompletedTask;
                         }
                     };

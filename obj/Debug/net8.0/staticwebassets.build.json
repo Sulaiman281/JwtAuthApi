@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "LzmSc5ULKmUODwLbuf4qnadnF+pEPRzoFKUj5BzjxdE=",
+  "Hash": "TsIFGUNWt44dNFY+ByhjNU4SCpmEQDfLXumb1fweI2Y=",
   "Source": "JwtAuthApi",
   "BasePath": "_content/JwtAuthApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

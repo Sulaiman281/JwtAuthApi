@@ -27,5 +27,11 @@ namespace Controllers
         {
             return Ok(await _userService.RefreshToken(accessToken, refreshToken));
         }
+
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromForm] string idToken)
+        {
+            return Ok(await _userService.GoogleLogin(idToken));
+        }
     }
 }

@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddSingleton<JwtService>();
 
-
 JwtConfiguration.ConfigureJwt(builder.Services);
-builder.Services.AddAuthorization();
+// builder.Services.AddAuthorization();
+AuthorizationConfig.ConfigureAuthorization(builder.Services);
 
 builder.Services.AddSingleton<UserRepository>(); // temp database for testing
 builder.Services.AddScoped<IUserService, UserService>();

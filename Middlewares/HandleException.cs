@@ -17,6 +17,7 @@ namespace JwtAuthApi.Middlewares
             }
             catch (ArgumentException ex)
             {
+                Console.WriteLine("Argument Exception: " + ex.Message);
                 _logger.LogError(ex, ex.Message);
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 context.Response.ContentType = "application/json";
@@ -24,6 +25,7 @@ namespace JwtAuthApi.Middlewares
             }
             catch (TokenException ex)
             {
+                Console.WriteLine("Token Exception: " + ex.Message);
                 _logger.LogError(ex, ex.Message);
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 context.Response.ContentType = "application/json";
@@ -31,6 +33,7 @@ namespace JwtAuthApi.Middlewares
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Exception: " + ex.Message);
                 _logger.LogError(ex, ex.Message);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";

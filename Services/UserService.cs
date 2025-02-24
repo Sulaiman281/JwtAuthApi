@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using Entity;
+using Google.Apis.Auth;
+using JwtAuthApi.Services;
 using Models;
 
 namespace Services
@@ -11,6 +13,7 @@ namespace Services
         Task<LoginResponse> Authenticate(LoginRequest request);
         Task<LoginResponse> Register(RegisterRequest request);
         Task<LoginResponse> RefreshToken(string accessToken, string refreshToken);
+        Task<LoginResponse> GoogleLogin(string idToken);
     }
 
     public class UserService(JwtService jwtService, UserRepository userRepository) : IUserService
@@ -194,6 +197,21 @@ namespace Services
             user.RefreshTokenExpiryTime = expireDate;
             _userRepository.UpdateUser(user.Id, user);
             return Task.FromResult(new LoginResponse { AccessToken = aToken, RefreshToken = rToken });
+        }
+
+        public async Task<LoginResponse> GoogleLogin(string idToken)
+        {
+            var clientEmail = await GoogleTokenValidation.ValidateGoogleToken(idToken);
+
+            Console.WriteLine(clientEmail);
+
+            if (string.IsNullOrEmpty(clientEmail))
+            {
+                throw new ArgumentException("Invalid Google Token", nameof(idToken));
+            }
+
+            string token = _jwtService.Generate(00, "sayedsulaiman607@gmail.com", []);
+            return new LoginResponse { AccessToken = token, RefreshToken = "" };
         }
     }
 }
